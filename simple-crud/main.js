@@ -30,10 +30,24 @@ let storePost = () => {
        <div>
           <p>${posts.text}</p>
           <span class="options">
-            <i class="fas fa-edit"></i>
-            <i class="fas fa-trash-alt"></i>
+            <i onClick="editPost(this)" class="fas fa-edit"></i>
+            <i onclick="removePost(this)" class="fas fa-trash-alt"></i>
           </span>
         </div>
        `
        description.value = ""
+}
+
+// remove post element
+let removePost = (postItem) => {
+       if(confirm("Do you want to delete this item?")){
+          postItem.parentElement.parentElement.remove()
+       }
+        
+}
+
+// edit post element 
+let editPost = (postItem) => {
+         description.value = postItem.parentElement.previousElementSibling.innerHTML
+         postItem.parentElement.parentElement.remove()
 }
