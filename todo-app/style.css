@@ -67,3 +67,7 @@ body {
   #msg {
     color: red;
   }
+
+  span i{
+     cursor: pointer;
+  }
