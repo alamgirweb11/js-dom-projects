@@ -48,7 +48,7 @@ let createTask = () => {
       <p>${data.description}</p>
       <span>
       <i class="fas fa-edit"></i>
-      <i class="fas fa-trash-alt"></i>
+      <i onclick="removeItem(this)" class="fas fa-trash-alt"></i>
       </span>
       </div>
      `;
@@ -61,4 +61,8 @@ function resetForm(){
        description.value = "";
 }
 
-console.log(data);
+function removeItem(item){
+       if(confirm("Do you want to delete this item? You can't restore it again.")){
+         item.parentElement.parentElement.remove();
+       }
+}
