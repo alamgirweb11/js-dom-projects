@@ -68,9 +68,12 @@ function removeItem(item){
 }
 
 function editItem(item){
+      let modalTitle = document.getElementById('modalTitle')
+       modalTitle.innerHTML = "Edit Task";
+       modalSubmitBtn.innerHTML = "Update";
        let selectedTask = item.parentElement.parentElement;
        title.value = selectedTask.children[0].innerHTML;
        date.value = selectedTask.children[1].innerHTML;
        description.value = selectedTask.children[2].innerHTML;
-       selectedTask.remove();
+       removeItem(item);
 }
