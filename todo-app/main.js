@@ -34,37 +34,42 @@ let formValidation = () => {
 let data = [];
 
 let inputValues = () => {
-    data['title'] = title.value, 
-    data['date'] = date.value, 
-    data['description'] = description.value, 
-    createTask();
+    data.push({
+        title: title.value, 
+        date: date.value,  
+        description: description.value
+    });
+    // store data in localStorage
+    localStorage.setItem("data", JSON.stringify(data));
+    createTasks();
 }
 
-let createTask = () => {
-     tasksWrapper.innerHTML += `
-      <div>
-      <span>${data.title}</span>
-      <span>${data.date}</span>
-      <p>${data.description}</p>
-      <span>
-      <i data-bs-toggle="modal" data-bs-target="#form" onclick="editItem(this)" class="fas fa-edit"></i>
-      <i onclick="removeItem(this)" class="fas fa-trash-alt"></i>
-      </span>
-      </div>
-     `;
+let createTasks = () => {
+    tasksWrapper.innerHTML = '';
+     data.map((task, index) => {
+        return (tasksWrapper.innerHTML += `
+        <div id=taskNo-${index}>
+        <span>${task.title}</span>
+        <span>${task.date}</span>
+        <p>${task.description}</p>
+        <span>
+        <i data-bs-toggle="modal" data-bs-target="#form" onclick="editItem(this)" class="fas fa-edit"></i>
+        <i onclick="removeItem(this)" class="fas fa-trash-alt"></i>
+        </span>
+        </div>
+       `);
+     });
      resetForm();
 }
 
-function resetForm(){
-       title.value = "";
-       date.value = "";
-       description.value = "";
-}
-
 function removeItem(item){
-       if(confirm("Do you want to delete this item? You can't restore it again.")){
+    //    if(confirm("Do you want to delete this item? You can't restore it again.")){
          item.parentElement.parentElement.remove();
-       }
+         // remove item form localStorage
+         data.splice(item.parentElement.parentElement.id, 1);
+         // update localStorage
+         localStorage.setItem("data", JSON.stringify(data));
+    //    }
 }
 
 function editItem(item){
@@ -77,3 +82,15 @@ function editItem(item){
        description.value = selectedTask.children[2].innerHTML;
        removeItem(item);
 }
+
+function resetForm(){
+    title.value = "";
+    date.value = "";
+    description.value = "";
+}
+
+// retrieve data from localStorage
+(() => {
+    data = JSON.parse(localStorage.getItem("data")) || [];
+    createTasks();
+})();
