@@ -3,7 +3,7 @@ let form = document.getElementById('form'),
  date = document.getElementById('dateInput'),
  description = document.getElementById('description'),
  errorMsg = document.getElementById('msg'),
- modalAddBtn = document.getElementById('modalAddBtn'),
+ modalSubmitBtn = document.getElementById('modalSubmitBtn'),
 
 tasksWrapper = document.getElementById('tasks');
 
@@ -19,14 +19,14 @@ let formValidation = () => {
       }else{
         errorMsg.innerHTML = '';
         inputValues();
-        modalAddBtn.setAttribute("data-bs-dismiss", "modal");
-        modalAddBtn.click();
+        modalSubmitBtn.setAttribute("data-bs-dismiss", "modal");
+        modalSubmitBtn.click();
         /** 
          * IIFE function =  immediately invoked functional expression
          * syntax  (function funName(){})();
         */
        (() => {
-        modalAddBtn.setAttribute("data-bs-dismiss", "");
+        modalSubmitBtn.setAttribute("data-bs-dismiss", "");
        })();
       }
 }
@@ -47,7 +47,7 @@ let createTask = () => {
       <span>${data.date}</span>
       <p>${data.description}</p>
       <span>
-      <i class="fas fa-edit"></i>
+      <i data-bs-toggle="modal" data-bs-target="#form" onclick="editItem(this)" class="fas fa-edit"></i>
       <i onclick="removeItem(this)" class="fas fa-trash-alt"></i>
       </span>
       </div>
@@ -57,7 +57,7 @@ let createTask = () => {
 
 function resetForm(){
        title.value = "";
-       data.value = "";
+       date.value = "";
        description.value = "";
 }
 
@@ -65,4 +65,12 @@ function removeItem(item){
        if(confirm("Do you want to delete this item? You can't restore it again.")){
          item.parentElement.parentElement.remove();
        }
+}
+
+function editItem(item){
+       let selectedTask = item.parentElement.parentElement;
+       title.value = selectedTask.children[0].innerHTML;
+       date.value = selectedTask.children[1].innerHTML;
+       description.value = selectedTask.children[2].innerHTML;
+       selectedTask.remove();
 }
